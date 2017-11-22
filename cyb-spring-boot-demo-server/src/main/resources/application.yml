@@ -1,0 +1,21 @@
+logging:
+    level:
+        root: INFO
+        com:
+            cyb:
+                spring:
+                    boot:
+                        demo: DEBUG
+mybatis:
+    type-aliases-package: com.cyb.spring.boot.demo.domain
+    mapper-locations: "classpath*:mybatis/com/cyb/spring/boot/demo/core/persistence/*.xml"
+             
+spring:
+    datasource:
+        url: jdbc:mysql://127.0.0.1/test?useUnicode=true&characterEncoding=UTF-8&useSSL=true
+        username: admin
+        password: 123
+        driver-class-name: com.mysql.jdbc.Driver
+        max-active: 10
+        max-idle: 5
+        min-idle: 0

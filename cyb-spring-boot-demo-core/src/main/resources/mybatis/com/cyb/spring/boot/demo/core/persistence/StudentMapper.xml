@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cyb.spring.boot.demo.core.persistence.StudentMapper">
+    <resultMap id="StudentMap" type="Student">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="age" property="age" />
+    </resultMap>
+    <select id="selectByQuery" parameterType="StudentQuery" resultMap="StudentMap">
+        SELECT id, name, age
+        FROM student
+        <where>
+            <if test="name != null and name != ''">
+                name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="minAge != null">
+                AND age &gt;= #{minAge}
+            </if>
+            <if test="maxAge != null">
+                AND age &lt;= maxAge
+            </if>
+        </where>
+    </select>
+    <select id="selectById" resultMap="StudentMap">
+        <![CDATA[
+            SELECT id, name, age
+            FROM student
+            WHERE id = #{id}
+        ]]>
+    </select>
+    <insert id="insertSelective" parameterType="Student" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO student
+        <trim prefix = "(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                name,
+            </if>
+            <if test="age != null">
+                age,
+            </if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                #{name},
+            </if>
+            <if test="age != null">
+                #{age},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateSelectiveById" parameterType="Student">
+        UPDATE student
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <delete id="deleteById">
+        <![CDATA[
+            DELTE FROM student
+            WHERE id = #{id}
+        ]]>
+    </delete>
+</mapper>
