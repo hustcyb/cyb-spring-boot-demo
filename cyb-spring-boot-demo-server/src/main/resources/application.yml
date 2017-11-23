@@ -19,6 +19,17 @@ spring:
         max-active: 10
         max-idle: 5
         min-idle: 0
+    redis:
+        database: 0
+        host: localhost
+        port: 6379
+        password:
+        pool:
+            max-active: 8
+            max-wait: -1
+            max-idle: 8
+            min-idle: 0
+            timeout: 0
         
 cyb:
     schedule:

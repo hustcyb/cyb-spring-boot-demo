@@ -1,12 +1,19 @@
 package com.cyb.spring.boot.demo.domain;
 
+import java.io.Serializable;
+
 /**
  * 学生
  * 
  * @author Administrator
  *
  */
-public class Student {
+public class Student implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4805832758425535002L;
 
 	/**
 	 * 编号

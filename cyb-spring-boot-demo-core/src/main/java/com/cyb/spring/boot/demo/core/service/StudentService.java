@@ -7,6 +7,10 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import com.cyb.spring.boot.demo.core.constants.StudentConstant;
@@ -24,6 +28,7 @@ import cyb.spring.boot.demo.common.json.JsonUtils;
  * @author Administrator
  *
  */
+@CacheConfig(cacheNames = "com.cyb.spring.boot.demo.core.service.StudentService")
 @Service
 public class StudentService {
 
@@ -46,6 +51,7 @@ public class StudentService {
 	 *            学生查询条件
 	 * @return 学生列表
 	 */
+	@Cacheable(key = "'students'", condition = "#query?.name == null and #query?.minAge == null and #query?.maxAge == null")
 	public List<Student> listByQuery(StudentQuery query) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("StudentService.listByQuery: start, query = {}",
@@ -72,6 +78,7 @@ public class StudentService {
 	 *            学生编号
 	 * @return 学生
 	 */
+	@Cacheable(key = "'student#' + #id")
 	public Student getById(Integer id) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("StudentService.getById: start, id = {}", id);
@@ -97,6 +104,7 @@ public class StudentService {
 	 *            学生
 	 * @return 学生编号
 	 */
+	@CacheEvict(key = "'students'")
 	public Integer save(Student student) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("StudentService.save: start, students = {}",
@@ -126,6 +134,8 @@ public class StudentService {
 	 *            学生
 	 * @return 影响的记录数目
 	 */
+	@Caching(evict = { @CacheEvict(key = "'students'"),
+			@CacheEvict(key = "'student#' + #student?.id") })
 	public Integer updateById(Student student) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("StudentService.updateById: start, student = {}",
@@ -160,6 +170,8 @@ public class StudentService {
 	 *            学生编号
 	 * @return 影响的记录数目
 	 */
+	@Caching(evict = { @CacheEvict(key = "'students'"),
+			@CacheEvict(key = "'student#' + #id") })
 	public Integer deleteById(Integer id) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("StudentService.deleteById: start, id = {}", id);

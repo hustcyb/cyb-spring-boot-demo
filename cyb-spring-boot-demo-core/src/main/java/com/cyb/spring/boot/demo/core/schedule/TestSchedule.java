@@ -14,7 +14,9 @@ public class TestSchedule {
 	private static final Logger logger = LoggerFactory.getLogger(TestSchedule.class);
 	
 	@Scheduled(cron = "${cyb.schedule.task1.cron}")
-	public static void task1() {
-		logger.debug("TestSchedule.task1");
+	public static void task1() throws InterruptedException {
+		logger.debug("TestSchedule.task1: start");
+		Thread.sleep(6000L);
+		logger.debug("TestSchedule.task1: end");
 	}
 }
