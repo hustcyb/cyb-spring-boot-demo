@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cyb.spring.boot.demo.core.constants.StudentConstant;
@@ -16,6 +15,7 @@ import com.cyb.spring.boot.demo.domain.Student;
 import com.cyb.spring.boot.demo.domain.query.StudentQuery;
 import com.google.common.base.Preconditions;
 
+import cyb.spring.boot.demo.common.exception.MessageUtils;
 import cyb.spring.boot.demo.common.json.JsonUtils;
 
 /**
@@ -105,9 +105,10 @@ public class StudentService {
 
 		checkStudent(student);
 		String name = student.getName();
-		Preconditions.checkArgument(StringUtils.isNoneBlank(name), "请指定学生姓名");
+		Preconditions.checkArgument(StringUtils.isNoneBlank(name),
+				MessageUtils.exception("请指定学生姓名"));
 		byte age = student.getAge();
-		Preconditions.checkNotNull(age, "请指定学生年龄");
+		Preconditions.checkNotNull(age, MessageUtils.exception("请指定学生年龄"));
 
 		studentMapper.insertSelective(student);
 		Integer id = student.getId();
@@ -133,14 +134,15 @@ public class StudentService {
 
 		checkStudent(student);
 		Integer id = student.getId();
-		Preconditions.checkArgument(id != null, "请指定学生编号");
+		Preconditions.checkArgument(id != null,
+				MessageUtils.exception("请指定学生编号"));
 
 		int minId = StudentConstant.MIN_ID;
 		String message = String.format("学生编号须大于等于%d", minId);
 		Preconditions.checkArgument(id >= minId, message);
 		Preconditions.checkArgument(
 				student.getName() != null || student.getAge() != null,
-				"请指定需要更新的学生数据");
+				MessageUtils.exception("请指定需要更新的学生数据"));
 
 		int affectedRows = studentMapper.updateSelectiveById(student);
 		if (logger.isDebugEnabled()) {
@@ -183,7 +185,7 @@ public class StudentService {
 	 * @param student
 	 */
 	private void checkStudent(Student student) {
-		Preconditions.checkNotNull(student, "请指定学生数据");
+		Preconditions.checkNotNull(student, MessageUtils.exception("请指定学生数据"));
 
 		String name = student.getName();
 		if (StringUtils.isNotBlank(name)) {
@@ -193,7 +195,8 @@ public class StudentService {
 					minNameLength, maxNameLength);
 			int codePointCount = name.codePointCount(0, name.length());
 			Preconditions.checkArgument(codePointCount >= minNameLength
-					&& codePointCount <= maxNameLength, message);
+					&& codePointCount <= maxNameLength,
+					MessageUtils.exception(message));
 		}
 
 		Byte age = student.getAge();
@@ -202,8 +205,8 @@ public class StudentService {
 			int maxAge = StudentConstant.MAX_AGE;
 			String message = String.format("学生年龄须大于等于%d岁，小于等于%d岁", minAge,
 					maxAge);
-			Preconditions
-					.checkArgument(age >= minAge && age <= maxAge, message);
+			Preconditions.checkArgument(age >= minAge && age <= maxAge,
+					MessageUtils.exception(message));
 		}
 	}
 }

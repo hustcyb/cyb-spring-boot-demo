@@ -17,7 +17,7 @@
                 AND age &gt;= #{minAge}
             </if>
             <if test="maxAge != null">
-                AND age &lt;= maxAge
+                AND age &lt;= #{maxAge}
             </if>
         </where>
     </select>
@@ -62,7 +62,7 @@
     </update>
     <delete id="deleteById">
         <![CDATA[
-            DELTE FROM student
+            DELETE FROM student
             WHERE id = #{id}
         ]]>
     </delete>
