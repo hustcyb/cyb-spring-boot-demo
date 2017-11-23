@@ -19,3 +19,8 @@ spring:
         max-active: 10
         max-idle: 5
         min-idle: 0
+        
+cyb:
+    schedule:
+        task1:
+            cron: "*/10 * * * * ?"
