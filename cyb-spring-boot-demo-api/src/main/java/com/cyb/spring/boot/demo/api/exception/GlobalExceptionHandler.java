@@ -1,6 +1,8 @@
 package com.cyb.spring.boot.demo.api.exception;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,20 @@ public class GlobalExceptionHandler {
 	private static final Logger logger = LoggerFactory
 			.getLogger(GlobalExceptionHandler.class);
 
+	@ExceptionHandler(ConstraintViolationException.class)
+	@ResponseBody
+	public ExceptionResponse handleConstraintViolationException(ConstraintViolationException exception) {
+		StringBuilder builder = new StringBuilder(100);
+		String delimiter = "";
+		for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {
+			builder.append(delimiter + violation.getMessage());
+			delimiter = "\n";
+		}
+		
+		ExceptionResponse response = new ExceptionResponse(builder.toString());
+		return response;
+	}
+	
 	@ResponseBody
 	@ExceptionHandler(Exception.class)
 	public ExceptionResponse handleException(HttpServletRequest request,

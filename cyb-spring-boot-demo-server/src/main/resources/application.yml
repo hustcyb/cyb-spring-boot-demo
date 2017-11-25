@@ -46,7 +46,6 @@ cyb:
         route-key:
             value: cyb-value-route-key
             student: cyb-student-route-key
-            
     schedule:
         task1:
             cron: "*/10 * * * * ?"
