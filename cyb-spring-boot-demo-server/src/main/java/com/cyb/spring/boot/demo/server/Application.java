@@ -7,9 +7,9 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-@EnableCaching
+@EnableCaching(proxyTargetClass = true)
 @EnableAsync
-@EnableScheduling
+//@EnableScheduling
 @MapperScan("com.cyb.spring.boot.demo.core.persistence")
 @SpringBootApplication(scanBasePackages = "com.cyb.spring.boot.demo")
 public class Application {

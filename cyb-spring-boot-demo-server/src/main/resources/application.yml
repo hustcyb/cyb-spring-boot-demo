@@ -49,3 +49,6 @@ cyb:
     schedule:
         task1:
             cron: "*/10 * * * * ?"
+    wechat:
+        app-id: wx154ba3d392d0c249
+        app-secret: 9f782edd77fd417fe61798c572be1892
